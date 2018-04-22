@@ -1,0 +1,28 @@
+Dear Yuhang,
+
+Got the correct instructions for the server.
+
+To generate the zip file, you have to send an HTTP request to:
+
+http://visage.cs.ucl.ac.uk/VisAge/GetContent
+
+This will return a blank page, but causes the server to create the file.
+
+If you query:
+
+http://visage.cs.ucl.ac.uk/VisAge/GetLastZipTime
+
+You receive text back which is just the timestamp of the last zip file 
+creation (in UNIX time).
+
+You can then run the request:
+
+http://visage.cs.ucl.ac.uk/VisAge/FileServer/VisAge.zip
+
+This should download the actual zip file.
+
+The step we missed before was calling GetContent.
+
+Cheers,
+
+Simon

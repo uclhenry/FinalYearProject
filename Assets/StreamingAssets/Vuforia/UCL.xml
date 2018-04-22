@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QCARConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="qcar_config.xsd">
+  <Tracking>
+    <ImageTarget name="Patch00" size="2.000000 2.283333" />
+    <ImageTarget name="Patch02" size="6.000000 2.360000" />
+    <ImageTarget name="Patch03" size="6.000000 2.952000" />
+    <ImageTarget name="Patch04" size="2.500000 3.253572" />
+    <ImageTarget name="Patch06" size="5.000000 3.611111" />
+    <ImageTarget name="Patch10" size="1.500000 3.680000" />
+    <ImageTarget name="Patch08" size="1.500000 2.903226" />
+    <ImageTarget name="Patch09" size="5.500000 5.622222" />
+  </Tracking>
+</QCARConfig>

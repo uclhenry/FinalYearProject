@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 584110da2e465e34ab3cbd77df58de11
+timeCreated: 1524329001
+licenseType: Free
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - AudioCanvas: {instanceID: 0}
+  - ButtonPrefeb: {fileID: 1086219720834250, guid: de00bf3bec626b643b23d44c3b11bec2,
+      type: 2}
+  - Sound: {instanceID: 0}
+  - file: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QCARConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="qcar_config.xsd">
+  <Tracking>
+    <ImageTarget name="Patch133" size="5.000000 3.750000" />
+    <ImageTarget name="Patch132" size="5.000000 7.092198" />
+    <ImageTarget name="Patch131" size="5.000000 2.740000" />
+    <ImageTarget name="Patch130" size="2.000000 2.631579" />
+  </Tracking>
+</QCARConfig>
