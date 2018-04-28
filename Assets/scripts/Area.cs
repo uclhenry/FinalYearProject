@@ -32,50 +32,81 @@ public class Area
 	{//3 mod ,local ,realdata ,ucl
 		string LastTime="";
 		string LastTimeNew="";
-        if(mod!="local")
+        string Source = SceneTools.GetSettingValue("Source");
+        if (Source == "") {
+            Source = "realdata";
+            SceneTools.ChangeSetting("realdata", "34", "false");
+        }
+        SceneTools.CurrentSource = SceneTools.GetSettingValue("Source");
+        Debug.Log(Source);
+        bool isExistDateFile = File.Exists(SceneTools.AreaZipLastTimeLocal());
+        if (mod.Equals("download"))//update or download
         {
             //if (1+1==2)//Application.loadedLevelName == "ExperimentNavigation" "ExperimentNavigation"
+            if (Source == "realdata")
+            {
+                
+                Debug.LogWarning("Downloading readdata");
+                if (!File.Exists(SceneTools.AreaZipFileLocal()))//not exist zip
+                {
+                    SceneTools.ClearLocalData();
+                    SceneTools.DownloadFileFromUrlSync(SceneTools.AreaZipLastTimeUrl(), SceneTools.AreaZipLastTimeLocal());
+                    SceneTools.DownloadFileFromUrlSync(SceneTools.AreaZipFileUrl(), SceneTools.AreaZipFileLocal());
+                    new ZipIt(SceneTools.AreaZipFileLocal(), "", Application.persistentDataPath);
+                }
+                //}
+                else //the have zip,then check the update
+                {
+                    if (isExistDateFile)
+                    {
+                        LastTime = File.ReadAllText(SceneTools.AreaZipLastTimeLocal());
 
-            //{
-			    if(!File.Exists(SceneTools.AreaZipFileLocal()))
-			    {
+                        SceneTools.DownloadFileFromUrlSync(SceneTools.AreaZipLastTimeUrl(), SceneTools.AreaZipLastTimeLocal());
 
-                SceneTools.DownloadFileFromUrlSync(SceneTools.AreaZipLastTimeUrl(), SceneTools.AreaZipLastTimeLocal());
-                SceneTools.DownloadFileFromUrlSync(SceneTools.AreaZipFileUrl(), SceneTools.AreaZipFileLocal());
-                //SceneTools.DownloadFileFromUrlSync(SceneTools.testZip, SceneTools.AreaZipFileLocal());
-				    new ZipIt(SceneTools.AreaZipFileLocal(), "", Application.persistentDataPath);				
-			    }
-		    //}
-		    else //the usual
-		    {
-			    if(File.Exists (SceneTools.AreaZipLastTimeLocal()))
-			    {
-				    LastTime = File.ReadAllText(SceneTools.AreaZipLastTimeLocal());
-			
-				    SceneTools.DownloadFileFromUrlSync(SceneTools.AreaZipLastTimeUrl(), SceneTools.AreaZipLastTimeLocal() );
-					
-				    LastTimeNew = File.ReadAllText(SceneTools.AreaZipLastTimeLocal());
-						
-				    if(Convert.ToInt64(LastTimeNew) > Convert.ToInt64 (LastTime))
-				    {
-					    Debug.Log ("Downloading new zip file");
-					    SceneTools.DownloadFileFromUrlSync(SceneTools.AreaZipFileUrl(), SceneTools.AreaZipFileLocal());
-					    new ZipIt(SceneTools.AreaZipFileLocal(), "", Application.persistentDataPath);		
-				    }
-				    else 
-				    {
-					    Debug.Log ("Zip file is latest version");
+                        LastTimeNew = File.ReadAllText(SceneTools.AreaZipLastTimeLocal());
+
+                        if (Convert.ToInt64(LastTimeNew) > Convert.ToInt64(LastTime))
+                        {
+                            //update
+                            Debug.Log("Downloading new zip file");
+                            SceneTools.DownloadFileFromUrlSync(SceneTools.AreaZipFileUrl(), SceneTools.AreaZipFileLocal());
+                            new ZipIt(SceneTools.AreaZipFileLocal(), "", Application.persistentDataPath);
+                        }
+                        else
+                        {
+                            //not gonna update
+                            Debug.Log("Zip file is latest version");
+                        }
                     }
-			    }
-			    else
-			    {
-                    Debug.Log("Zip not File.Exists (SceneTools.AreaZipLastTimeLocal())");
-                    SceneTools.DownloadFileFromUrlSync(SceneTools.AreaZipLastTimeUrl(), SceneTools.AreaZipLastTimeLocal() );
-                    SceneTools.DownloadFileFromUrlSync(SceneTools.AreaZipFileUrl(), SceneTools.AreaZipFileLocal());//AreaZipFileUrl()
-                    new ZipIt(SceneTools.AreaZipFileLocal(), "", Application.persistentDataPath);				
-			    }
-		    }
+                    else //unknown version ,so update   ,or last version is test
+                    {
+                        SceneTools.ClearLocalData();
+                        Debug.Log("Zip not File.Exists (SceneTools.AreaZipLastTimeLocal())");
+                        SceneTools.DownloadFileFromUrlSync(SceneTools.AreaZipLastTimeUrl(), SceneTools.AreaZipLastTimeLocal());
+                        SceneTools.DownloadFileFromUrlSync(SceneTools.AreaZipFileUrl(), SceneTools.AreaZipFileLocal());//AreaZipFileUrl()
+                        new ZipIt(SceneTools.AreaZipFileLocal(), "", Application.persistentDataPath);
+                    }
+                }
+            }
+            else if (Source == "Test") {
+                if (isExistDateFile)
+                {//realdata
+                    SceneTools.ClearLocalData();//delete realdata
+                    SceneTools.DownloadFileFromUrlSync(SceneTools.testZip, SceneTools.AreaZipFileLocal());
+                    new ZipIt(SceneTools.AreaZipFileLocal(), "", Application.persistentDataPath);
+                }
+                else if (!File.Exists(SceneTools.AreaZipFileLocal())) {
+                    SceneTools.ClearLocalData();//delete realdata
+                    SceneTools.DownloadFileFromUrlSync(SceneTools.testZip, SceneTools.AreaZipFileLocal());
+                    new ZipIt(SceneTools.AreaZipFileLocal(), "", Application.persistentDataPath);
+                }
+
+                
+            }
+            //{
+
         }
+        SceneTools.ChangeSetting(SceneTools.CurrentSource, "34", "false");
         //convert the xml into a cs object (after downloading all the file or file is already)
         var serializer = new XmlSerializer(typeof(Area));
 
@@ -83,6 +114,18 @@ public class Area
         {
             return serializer.Deserialize(stream) as Area;
         }
+    }
+    public POI GetNearestPOI(GPSlocation coordinate) {
+        double minDistance = 99999999999f;
+        POI minPOI = null;
+        foreach (POI p in POIs) {
+            if (p.GetDistance(coordinate) < minDistance)
+            {
+                minDistance = p.GetDistance(coordinate);
+                minPOI = p;
+            }
+        }
+        return minPOI;
     }
     //-------------------------end---XML serializer/deserializer--------------------------------------------//
 
@@ -257,13 +300,15 @@ public class Content
 			content.transform.parent.localScale = new Vector3(0.001f, 0.001f, 0.001f);
                 string p = Path.Combine(Application.persistentDataPath,SceneTools.AreaNameDefault()+"/"+Description);
                 Debug.Log(p);
+
+                content.AddComponent<DragScript>();
 			if(System.IO.File.Exists(p))
 			{
 				Texture2D texture = new Texture2D(512,512);
 				texture.LoadImage(System.IO.File.ReadAllBytes(p));
                     //TextureScaler tool = new TextureScaler();
                     //TextureScaler.scale(texture, 1, 1);
-
+                    content.GetComponent<MeshCollider>().enabled = true;
                 content.GetComponent<Renderer>().material.mainTexture = texture;
                     //content.transform.localScale = new Vector3(0.2f,0.2f,0.2f);
 
@@ -295,7 +340,7 @@ public class Content
             if (Description.Contains("mp3"))
             {
                 
-                Debug.Log("A audio called" + Description);
+                //Debug.Log("A audio called" + Description);
                 GameObject prefeb_Container =(GameObject) Resources.Load("AudioContainer", typeof(GameObject));
                 content = GameObject.Instantiate<GameObject>(prefeb_Container, new Vector3(0, 0, 0), Quaternion.identity);
                 content.transform.parent = contentContainer.transform;
@@ -315,8 +360,11 @@ public class Content
                 
                 //asource.clip = clip;
                 Debug.Log("A audio from" + content.name);
+                    
+                    content.AddComponent<MeshCollider>();
+                    content.AddComponent<DragScript>();
                     mediaGo = content;
-            }
+                }
             break;
 		
         case PoiDataType.text:
@@ -345,8 +393,11 @@ public class Content
                 content.GetComponentInChildren<Text>().text = Description;
                 content.GetComponent<Canvas>().enabled = true;
                 content.transform.localScale = new Vector3(10f, 10f, 10f);
-                content.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(300, 900);
-                
+                content.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(500, 900);
+                GameObject textGo = content.transform.GetChild(0).gameObject;
+
+                textGo.AddComponent<MeshCollider>();
+                textGo.AddComponent<DragScript>();
                 break;
 
 		default:

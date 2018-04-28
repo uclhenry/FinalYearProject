@@ -73,6 +73,7 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
             linkScene();
             OnTrackingFound();
             addPoi();
+            SwitchMap(false);
 
         }
         else if (previousStatus == TrackableBehaviour.Status.TRACKED &&
@@ -137,6 +138,7 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
         foreach (var component in canvasComponents)
                 //if(component.gameObject.transform.parent ==scene)
                 component.enabled = true;
+        SceneTools.isTracking = true;
     }
 
 
@@ -158,6 +160,7 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
         // Disable canvas':
         foreach (var component in canvasComponents)
             component.enabled = false;
+        SceneTools.isTracking = false;
     }
 
     #endregion // PRIVATE_METHODS
@@ -196,14 +199,19 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
     void OnGUI()
     {
         if (ButtonOn) {
-            GameObject.Find("[Map]").transform.position = new Vector3(10000, 0, 0);
+            //GameObject.Find("[Map]").transform.position = new Vector3(10000, 0, 0);
+            if(scenelist.Count>1)
             NextSceneButton();
+            if(SceneTools.isTestMode)
             ShowInfoForPoiButton();
+     
         }
         
     }
     void ShowInfoForPoiButton() {
-        if (GUI.Button(new Rect(Screen.width * 0.8f, 4f / 8 * Screen.height, 0.2f * Screen.width, 0.1f * Screen.height), "Show/Hide info")) {
+        GUIStyle titleStyle = new GUIStyle("button");
+        titleStyle.fontSize = SceneTools.buttonFontSize;
+        if (GUI.Button(new Rect(Screen.width * 0.8f, 4f / 8 * Screen.height, 0.2f * Screen.width, 0.1f * Screen.height), "POI info", titleStyle)) {
             if (!poiForScene.isShowInfo())
             {
                 poiForScene.openBoard();
@@ -216,7 +224,9 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
     }
     void NextSceneButton()
     {
-        if (GUI.Button(new Rect(Screen.width * 0.8f, 2f / 8 * Screen.height, 0.2f * Screen.width, 0.1f * Screen.height), "Next Scene"))
+        GUIStyle titleStyle = new GUIStyle("button");
+        titleStyle.fontSize = SceneTools.buttonFontSize;
+        if (GUI.Button(new Rect(Screen.width * 0.8f, 2f / 8 * Screen.height, 0.2f * Screen.width, 0.1f * Screen.height), "Next Scene", titleStyle))
         {
             
 
@@ -227,8 +237,10 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
             HideScenes();
             linkScene();
             OnTrackingFound();
-            GameObject.Find("[Map]").transform.position = new Vector3(10000, 0, 0);
+            SwitchMap(false);
+            //GameObject.Find("[Map]").transform.position = new Vector3(0, 0, 0);
 
         }
     }
+
 }

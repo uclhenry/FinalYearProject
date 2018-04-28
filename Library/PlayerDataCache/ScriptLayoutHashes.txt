@@ -2,7 +2,7 @@ Android
 SceneListBegin?
 Assets/deleteMarker.unity
 SceneListEnd?
-ad542a985ffc3429008af6440dd4223d Assembly-CSharp.dll:.DynamicDataSetLoader
+74b738ba428b396208212b5015ccb98b Assembly-CSharp.dll:.DynamicDataSetLoader
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Timeline.dll:UnityEngine.Timeline.ActivationPlayableAsset
 970a95104359198fe1a98ef48655de8c UnityEngine.Timeline.dll:UnityEngine.Timeline.ActivationTrack
 8144169769d51429c4aedc8b0f92d47b UnityEngine.Timeline.dll:UnityEngine.Timeline.AnimationPlayableAsset
@@ -229,6 +229,7 @@ e0f7ffd5d5c2abe4b2e16569a21163da UnityEngine.GoogleAudioSpatializer.dll:UnityEng
 b8f784f5a57d81c5f388ffeda96e4969 Assembly-CSharp.dll:.AN
 e0f7ffd5d5c2abe4b2e16569a21163da UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioRoom
 3d3be9a917f9a3068245012ffe84bd60 Assembly-CSharp.dll:.ActiveCamera
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.DragScript
 bc68edb0af574bf79f9550ead8ebae5c UnityEngine.HoloLens.dll:UnityEngine.Audio.AudioSpatializerMicrosoft
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.HoloLens.dll:UnityEngine.EventSystems.HoloLensInput
 463516d5b5fe8e67a0a24c48f2095b04 UnityEngine.HoloLens.dll:UnityEngine.EventSystems.HoloLensInputModule

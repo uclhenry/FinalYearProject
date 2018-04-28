@@ -65,6 +65,7 @@ public class TestMap : MonoBehaviour
   
 	bool Toolbar(MapBehaviour map)
 	{
+
         if (isMapOn() == false) return false;
 
 		GUI.matrix = Matrix4x4.Scale(new Vector3(guiXScale, guiXScale, 1.0f));
@@ -192,7 +193,7 @@ public class TestMap : MonoBehaviour
 		map.InputsEnabled = true;
 		map.ShowsGUIControls = true;
 
-		map.GUIDelegate += Toolbar;
+		//map.GUIDelegate += Toolbar;
 
         layers = new List<LayerBehaviour>();
 
@@ -389,15 +390,15 @@ public class TestMap : MonoBehaviour
         String location = longitude.ToString() + ',' + latitude.ToString();
         GUIStyle titleStyle = new GUIStyle();
         titleStyle.fontSize = 20;
-        titleStyle.normal.textColor = new Color(46f / 256f, 163f / 256f, 256f / 256f, 256f / 256f);
+        titleStyle.normal.textColor = Color.black;//new Color(46f / 256f, 163f / 256f, 256f / 256f, 256f / 256f);
         if(isMapOn()==true)
-        GUI.Label(new Rect(400, 10, 500, 200), location+" , "+ map.CurrentZoom.ToString(),titleStyle);
+        //GUI.Label(new Rect(400, 10, 500, 200), location+" , "+ map.CurrentZoom.ToString(),titleStyle);
         foreach (POI poi in area.POIs) {
             GameObject markerGO = poi.GetMarkerObj();
             Vector2 screenpos = GameObject.Find("Main Camera").GetComponent<Camera>().WorldToScreenPoint(markerGO.transform.position);
             //Debug.Log(screenpos);
             Vector2 reposition = new Vector2(screenpos.x, Screen.height - screenpos.y);
-
+                userPosition = new GPSlocation(latitude, longitude);
             double dis = poi.GetDistance(userPosition);
             DrawText(reposition, "distance: "+dis.ToString("0.00"));
         }
@@ -407,7 +408,7 @@ public class TestMap : MonoBehaviour
     void DrawText(Vector2 screen, String s) {
         GUIStyle titleStyle = new GUIStyle();
         titleStyle.fontSize = Convert.ToInt32(1 * map.CurrentZoom);
-        titleStyle.normal.textColor = new Color(46f / 256f, 163f / 256f, 256f / 256f, 256f / 256f);
+        titleStyle.normal.textColor = Color.black;// new Color(46f / 256f, 163f / 256f, 256f / 256f, 256f / 256f);
         if (isMapOn() == true)
             GUI.Label(new Rect(screen.x, screen.y, 500, 200), s, titleStyle);
     }

@@ -329,6 +329,7 @@
     <Compile Include="Assets\scripts\ActiveCamera.cs" />
     <Compile Include="Assets\scripts\AN.cs" />
     <Compile Include="Assets\scripts\Area.cs" />
+    <Compile Include="Assets\scripts\DragScript.cs" />
     <Compile Include="Assets\scripts\DynamicDataSetLoader.cs" />
     <Compile Include="Assets\scripts\GPSlocation.cs" />
     <Compile Include="Assets\scripts\Hidden.cs" />

@@ -12,7 +12,10 @@ public class MapSwitch : Hidden {
 	
 	// Update is called once per frame
 	void Update () {
-        if(lastOn != on)
+        GameObject MapCamera = GameObject.Find("Main Camera");
+        if(MapCamera.GetComponent<Camera>().enabled == false)
+            DisableRender();
+        if (lastOn != on)
         {
             if (on)
             {

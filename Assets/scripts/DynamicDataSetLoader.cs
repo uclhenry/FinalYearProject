@@ -11,6 +11,8 @@ using System.IO;
 
 public class DynamicDataSetLoader : MonoBehaviour
 {
+    public bool isTracking = false;
+    string LastPath = "";
     Vector3 lastHitPosition = Vector3.zero;
     Vector3 displacement = Vector3.zero;
     float moveX = 0.0f;
@@ -48,12 +50,17 @@ public class DynamicDataSetLoader : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        string Source = SceneTools.GetSettingValue("Source");
+        if (Source == "") Source = "Test";
+        if (Source == "Test") dataSetName = "UCL";
+        else dataSetName = "Realdata";
+
         contentList = new List<Content>();
         seenPOIs = new List<POI>();
         //AddedPOIs = new List<POI>();
         Input.compass.enabled = true;
         //convert xml into class
-        area = Area.Load("local");
+        area = Area.Load("download");
         CreateTrackerPois();
 
         //StartCoroutine(LoadXML());
@@ -401,6 +408,7 @@ public class DynamicDataSetLoader : MonoBehaviour
         {
             //ButtonAngleDown();
             //ButtonAngleUp();
+            if(!SceneTools.isTracking)
             ButtonViewContent();
 
         }
@@ -557,27 +565,16 @@ public class DynamicDataSetLoader : MonoBehaviour
         return example;
     }
     void SetImageContent(Content example) {
-        //Content example = null;
-        //foreach (Content c in contentList)
-        //{
-        //    if (c.Type.Equals(PoiDataType.texture2D)) {
-        //        example = c;
-        //    }
-        //}
-        string p = Path.Combine(Application.persistentDataPath, SceneTools.AreaNameDefault() + "/" + example.Description);
 
+        string p = Path.Combine(Application.persistentDataPath, SceneTools.AreaNameDefault() + "/" + example.Description);
+        if (LastPath == p) return;
         if (System.IO.File.Exists(p))
         {
             Texture2D texture = new Texture2D(512, 512);
             texture.LoadImage(System.IO.File.ReadAllBytes(p));
-            //TextureScaler tool = new TextureScaler();
-            //TextureScaler.scale(texture, 1, 1);
             aTexture = texture;
-            GameObject.Find("RawImage").transform.GetComponent<RawImage>().texture  = texture;
-            //content.transform.localScale = new Vector3(0.2f,0.2f,0.2f);
-
-
-            //content.GetComponent<Renderer>().material.shader = Shader.Find("metaio/UnlitTexture");
+            LastPath = p;
+            //GameObject.Find("RawImage").transform.GetComponent<RawImage>().texture  = texture;
         }
         else
         {
@@ -601,16 +598,13 @@ public class DynamicDataSetLoader : MonoBehaviour
             {//area.POIs
                 if (GUILayout.Button(poi.Name,titleStyle, GUILayout.Height(h)))
                 {
-                    Debug.Log("Clicked the " + poi.Name);
+                    //Debug.Log("Clicked the " + poi.Name);
                     currentMenu += 1;
                     currentPOI = poi;
                 }
 
             }
-            //if (GUILayout.Button("Back", titleStyle, GUILayout.Height(h)))
-            //{
-            //    currentMenu -= 1;
-            //}
+
         }
 
         else if (currentMenu == sceneMenu)
