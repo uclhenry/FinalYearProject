@@ -364,7 +364,10 @@ public class TestMap : MonoBehaviour
 
       
 
-
+            GameObject parentGo = GameObject.Find("myui");
+            Vector2 size = parentGo.GetComponent<RectTransform>().sizeDelta;
+            Vector2 scale = parentGo.GetComponent<RectTransform>().localScale;
+            parentGo.GetComponent<RectTransform>().localPosition = new Vector3(Screen.width/2 - size.x *scale.x/2, Screen.height/2 - size.y * scale.y / 2, 0f);
             foreach (POI poi in area.POIs)
             {
                 markerGO = Instantiate(go) as GameObject;
@@ -372,7 +375,20 @@ public class TestMap : MonoBehaviour
                 markerGO.name = poi.Name;
                 poi.SetMarkerObj(markerGO);
 
+                GameObject mapPoint = GameObject.Find("mypoi");
+                GameObject newmapPoint = Instantiate(mapPoint) as GameObject;
+                
+                
+                newmapPoint.transform.parent = parentGo.transform;
+                newmapPoint.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                poi.SetmapPOI(newmapPoint);
+                userPosition = new GPSlocation(51.5221, -0.131411);
+                double dis = poi.GetDistance(userPosition);
+                poi.GetmapPOI().GetComponent<Map>().distance = (float)dis/7;
+                newmapPoint.GetComponent<Map>().p = poi;
             }
+            GameObject map2 = GameObject.Find("mypoi");
+            map2.SetActive(false);
             finished = true;
 
         DestroyImmediate(go);
@@ -384,6 +400,10 @@ public class TestMap : MonoBehaviour
     {
 
         CreateMarkerWhenReady();
+        GameObject parentGo = GameObject.Find("myui");
+        Vector2 size = parentGo.GetComponent<RectTransform>().sizeDelta;
+        Vector2 scale = parentGo.GetComponent<RectTransform>().localScale;
+        parentGo.GetComponent<RectTransform>().localPosition = new Vector3(Screen.width / 2 - size.x * scale.x / 2, Screen.height / 2 - size.y * scale.y / 2, 0f);
 
         double longitude = Input.location.lastData.longitude;
         double latitude = Input.location.lastData.latitude;
@@ -400,7 +420,9 @@ public class TestMap : MonoBehaviour
             Vector2 reposition = new Vector2(screenpos.x, Screen.height - screenpos.y);
                 userPosition = new GPSlocation(latitude, longitude);
             double dis = poi.GetDistance(userPosition);
-            DrawText(reposition, "distance: "+dis.ToString("0.00"));
+            //DrawText(reposition, "distance: "+dis.ToString("0.00"));
+            DrawText(reposition, dis.ToString("0")+"m ");
+
         }
 
 

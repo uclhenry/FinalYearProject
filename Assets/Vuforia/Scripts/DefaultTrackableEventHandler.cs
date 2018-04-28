@@ -35,7 +35,6 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
         mTrackableBehaviour = GetComponent<TrackableBehaviour>();
         if (mTrackableBehaviour)
             mTrackableBehaviour.RegisterTrackableEventHandler(this);
-
         scenelist = new List<GameObject>();
     }
 
@@ -106,22 +105,7 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
         var rendererComponents = GetComponentsInChildren<Renderer>(true);
         var colliderComponents = GetComponentsInChildren<Collider>(true);
         var canvasComponents = GetComponentsInChildren<Canvas>(true);
-        //Transform scene = null;
 
-        
-        //DynamicDataSetLoader dyn = GameObject.Find("ARCamera").GetComponent<DynamicDataSetLoader>();
-        //if (transform.childCount != 0)
-        //{
-        //    Transform tPOI = transform.GetChild(transform.childCount - 1);//Poi
-
-        //    if (tPOI.gameObject.name.Contains("Poi"))
-        //    {scene = tPOI.GetChild(dyn.SceneIndex);
-        //    Debug.Log(tPOI.gameObject.name);
-
-        //    }
-            
-            
-        //}
         //Debug.Log(dyn.SceneIndex);
         // Enable rendering:
         foreach (var component in rendererComponents)
@@ -144,7 +128,7 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
 
     protected virtual void OnTrackingLost()
     {
-        GameObject.Find("[Map]").transform.position = new Vector3(10000, 0, 0);
+        //GameObject.Find("[Map]").transform.position = new Vector3(10000, 0, 0);
         var rendererComponents = GetComponentsInChildren<Renderer>(true);
         var colliderComponents = GetComponentsInChildren<Collider>(true);
         var canvasComponents = GetComponentsInChildren<Canvas>(true);
@@ -202,8 +186,8 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
             //GameObject.Find("[Map]").transform.position = new Vector3(10000, 0, 0);
             if(scenelist.Count>1)
             NextSceneButton();
-            if(SceneTools.isTestMode)
-            ShowInfoForPoiButton();
+            //if(SceneTools.isTestMode)
+            //ShowInfoForPoiButton();
      
         }
         

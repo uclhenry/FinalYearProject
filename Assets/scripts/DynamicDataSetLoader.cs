@@ -50,10 +50,6 @@ public class DynamicDataSetLoader : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        string Source = SceneTools.GetSettingValue("Source");
-        if (Source == "") Source = "Test";
-        if (Source == "Test") dataSetName = "UCL";
-        else dataSetName = "Realdata";
 
         contentList = new List<Content>();
         seenPOIs = new List<POI>();
@@ -61,6 +57,11 @@ public class DynamicDataSetLoader : MonoBehaviour
         Input.compass.enabled = true;
         //convert xml into class
         area = Area.Load("download");
+
+        string Source = SceneTools.GetSettingValue("Source");
+        if (Source == "") Source = "realdata";
+        if (Source == "Test") dataSetName = "UCL";
+        else dataSetName = "RealData";
         CreateTrackerPois();
 
         //StartCoroutine(LoadXML());
@@ -82,29 +83,29 @@ public class DynamicDataSetLoader : MonoBehaviour
         }
     }
 
-    void updatePoi() {
-        float degree = Input.compass.magneticHeading;
-        Debug.Log(degree);
-        //deg = 180f;
-        double angle = Math.PI * degree / 180.0;
-        double sinAngle = Math.Sin(-1 * angle);
-        double cosAngle = Math.Cos(-1 * angle);
-        //s = os = oa + as = x cos(theta) + y sin(theta)
-        //t = ot = ay 每 ab = y cos(theta) 每 x sin(theta)
-        Area a = area;
-        float currentX = (float)a.POIs[0].GetGPSlocation().longitude;
-        float currentZ = (float)a.POIs[0].GetGPSlocation().latitude;
-        foreach (POI p in a.POIs)
-        {
-            Debug.Log("updating!");
+    //void updatePoi() {
+    //    float degree = Input.compass.magneticHeading;
+    //    Debug.Log(degree);
+    //    //deg = 180f;
+    //    double angle = Math.PI * degree / 180.0;
+    //    double sinAngle = Math.Sin(-1 * angle);
+    //    double cosAngle = Math.Cos(-1 * angle);
+    //    //s = os = oa + as = x cos(theta) + y sin(theta)
+    //    //t = ot = ay 每 ab = y cos(theta) 每 x sin(theta)
+    //    Area a = area;
+    //    float currentX = (float)a.POIs[0].GetGPSlocation().longitude;
+    //    float currentZ = (float)a.POIs[0].GetGPSlocation().latitude;
+    //    foreach (POI p in a.POIs)
+    //    {
+    //        Debug.Log("updating!");
 
-            float x = (float)p.GetGPSlocation().longitude - currentX;
-            float z = (float)p.GetGPSlocation().latitude - currentZ;
-            float s = (float)(x * cosAngle + z * sinAngle);
-            float t = (float)(z * cosAngle - x * sinAngle);
-            p.GetARgo().transform.position = new Vector3(500000f * s, 0f, 500000f * t);
-        }
-    }
+    //        float x = (float)p.GetGPSlocation().longitude - currentX;
+    //        float z = (float)p.GetGPSlocation().latitude - currentZ;
+    //        float s = (float)(x * cosAngle + z * sinAngle);
+    //        float t = (float)(z * cosAngle - x * sinAngle);
+    //        p.GetARgo().transform.position = new Vector3(500000f * s, 0f, 500000f * t);
+    //    }
+    //}
     void CreateTrackerPois()
     {
         GameObject areaObject = new GameObject();
@@ -144,8 +145,9 @@ public class DynamicDataSetLoader : MonoBehaviour
 
         }
     }
-    void AddScene2handler() {
+    bool AddScene2handler() {
         Debug.Log("========= add to handler ===========");
+        if (area == null) return false;
         foreach (POI p in area.POIs) {
             Debug.Log("========= p ===========");
             String vuforiaTarget = "DynamicImageTarget-" + p.Id;
@@ -166,6 +168,7 @@ public class DynamicDataSetLoader : MonoBehaviour
                 }
 
         }
+        return true;
     }
 
 
@@ -225,8 +228,8 @@ public class DynamicDataSetLoader : MonoBehaviour
                         {//if id from xml from server == image name from vuforia
                             if (p.Id == tb.TrackableName)
                             {
-                                p.SetinfoBoard(augmentation);
-                                p.openBoard();
+                                //p.SetinfoBoard(augmentation);
+                                //p.openBoard();
                                 Debug.Log("Info is seted up");
                                 DefaultTrackableEventHandler h = tb.gameObject.GetComponent<DefaultTrackableEventHandler>();
                                 h.poiForScene = p;
@@ -241,6 +244,18 @@ public class DynamicDataSetLoader : MonoBehaviour
                     else
                     {
                         Debug.Log("<color=yellow>Warning: No augmentation object specified for: " + tb.TrackableName + "</color>");
+                        foreach (POI p in area.POIs)
+                        {//if id from xml from server == image name from vuforia
+                            if (p.Id == tb.TrackableName)
+                            {
+                                //p.SetinfoBoard(augmentation);
+                                //p.openBoard();
+                                Debug.Log("Info is seted up");
+                                DefaultTrackableEventHandler h = tb.gameObject.GetComponent<DefaultTrackableEventHandler>();
+                                h.poiForScene = p;
+
+                            }
+                        }
                     }
 
                 }
@@ -276,42 +291,42 @@ public class DynamicDataSetLoader : MonoBehaviour
 
             if (once == false)
         {
-            AddScene2handler();
-
+            bool success = AddScene2handler();
+            if (success) {
             HideScenes();
             once = true;
+            }
+
         }
         if (area != null)
             if (area.POIs != null)
             {
 
                 //updatePoi();
-                updateSeenContent();
+                //updateSeenContent();
             }
 
         IEnumerable<TrackableBehaviour> tbs = TrackerManager.Instance.GetStateManager().GetTrackableBehaviours();
         foreach (TrackableBehaviour tb in tbs)
         {
-            //board from tb
-            //find the p with same name 
-            // tb.TrackableName == point Name
-            Transform board = tb.gameObject.transform.GetChild(0);
-            //POI p = null;
-            if (area.POIs != null) {
-                //int i = 0;
-                foreach (POI p in area.POIs)
-                {//if id from xml from server == image name from vuforia
-                    if (p.Id == tb.TrackableName)
-                    {
-                        if (p.rendered == false) {
-                            RenderText(board, p);
 
-                            p.rendered = true;
-                        }
-                    }
+            //Transform board = tb.gameObject.transform.GetChild(0);
 
-                }
-            }
+            //if (area.POIs != null) {
+            //    //int i = 0;
+            //    foreach (POI p in area.POIs)
+            //    {//if id from xml from server == image name from vuforia
+            //        if (p.Id == tb.TrackableName)
+            //        {
+            //            if (p.rendered == false) {
+            //                RenderText(board, p);
+
+            //                p.rendered = true;
+            //            }
+            //        }
+
+            //    }
+            //}
 
 
         }

@@ -160,6 +160,9 @@ public class POI
 
     //non-serializable properties and attributes
     //on map
+    GameObject mapPOI;
+    public GameObject GetmapPOI() { return mapPOI; }
+    public void SetmapPOI(GameObject obj) { mapPOI = obj; }
     GameObject markerObj;
     public GameObject GetMarkerObj() { return markerObj; }
     public void SetMarkerObj(GameObject obj) { markerObj = obj; }

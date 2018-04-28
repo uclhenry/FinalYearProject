@@ -243,6 +243,7 @@ c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.Spa
 ceb294277a3ffa013f1e57bb517184fb Assembly-CSharp.dll:.MapSwitch
 c08b196716247885d3b27f7f282b2568 Assembly-CSharp-firstpass.dll:.ImageEffectBase
 8ad831a0bf4cdf0b63dff50aefc524ff Assembly-CSharp.dll:.MusicPlayer
+1a50d3407894a530dab0bb99e1b8c45b Assembly-CSharp.dll:.Map
 447cf3d2ce073cbf39aff9b1e8ffb49d Assembly-CSharp.dll:.HiddenCompass
 26215f135eeb48d8fa1189498c107f6c Vuforia.UnityExtensions.dll:Vuforia.AnchorBehaviour
 0561521e336e270e6e5a9c61387cb838 Vuforia.UnityExtensions.dll:Vuforia.AnchorInputListenerBehaviour
@@ -316,3 +317,4 @@ d2a2bd333db22f480a8589e167314ecc Vuforia.UnityExtensions.dll:Vuforia.UserDefined
 05524b8f659e7bfe5756d1335fec24ba Vuforia.UnityExtensions.dll:Vuforia.WireframeTrackableEventHandler
 15bea26698002c6c4a3087131232ce5c Vuforia.UnityExtensions.dll:Vuforia.WordBehaviour
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:UnitySlippyMap.Map.TileDownloaderBehaviour
+edd1b3541464d5b024a35accba99e187 Assembly-CSharp.dll:.HiddenMyMap

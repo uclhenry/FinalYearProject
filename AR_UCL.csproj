@@ -325,6 +325,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Map.cs" />
     <Compile Include="Assets\MusicPlayer.cs" />
     <Compile Include="Assets\scripts\ActiveCamera.cs" />
     <Compile Include="Assets\scripts\AN.cs" />
@@ -334,6 +335,7 @@
     <Compile Include="Assets\scripts\GPSlocation.cs" />
     <Compile Include="Assets\scripts\Hidden.cs" />
     <Compile Include="Assets\scripts\HiddenCompass.cs" />
+    <Compile Include="Assets\scripts\HiddenMyMap.cs" />
     <Compile Include="Assets\scripts\MapSwitch.cs" />
     <Compile Include="Assets\scripts\SceneTools.cs" />
     <Compile Include="Assets\scripts\Test.cs" />
