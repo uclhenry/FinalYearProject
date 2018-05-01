@@ -8,8 +8,7 @@ public class MapSwitch : Hidden {
 	// Use this for initialization
 	void Start () {
 		
-	}
-	
+	}	
 	// Update is called once per frame
 	void Update () {
         GameObject MapCamera = GameObject.Find("Main Camera");

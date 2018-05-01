@@ -29,7 +29,7 @@ public class Area
 	}
 	
 	public static Area Load(string mod)//Area 
-	{//3 mod ,local ,realdata ,ucl
+	{
 		string LastTime="";
 		string LastTimeNew="";
         string Source = SceneTools.GetSettingValue("Source");
@@ -42,7 +42,7 @@ public class Area
         bool isExistDateFile = File.Exists(SceneTools.AreaZipLastTimeLocal());
         if (mod.Equals("download"))//update or download
         {
-            //if (1+1==2)//Application.loadedLevelName == "ExperimentNavigation" "ExperimentNavigation"
+          
             if (Source == "realdata")
             {
                 
@@ -191,15 +191,6 @@ public class POI
         return infoBoard.GetComponent<Canvas>().enabled ;
     }
 
-    //
-    //GameObject PoiFolder;
-    //public void SetPoiGo(GameObject obj) {
-    //    PoiFolder = obj;
-    //}
-    //public GameObject GetPoiGo(){
-    //    return PoiFolder;
-    //}
-    //
     int cosId;
     public int GetCosId() { return cosId; }
 
@@ -217,16 +208,8 @@ public class POI
         markerObj = new GameObject();
         markerObj.transform.parent = areaObject.transform;
         markerObj.name = "Poi_" + Name;
-        //metaioTracker script = (metaioTracker)markerObj.AddComponent<metaioTracker>();
-       // markerObj.tag = "POI";
-        cosId = newCosId;
-        //script.cosID = cosId; //first cosID must be 1
 
-        //if (Eras.Length > 1) //Do not hide slider when there's only 1 era
-        {
-            //ControlContentContainers ccs = markerObj.AddComponent<ControlContentContainers>();
-            //ccs.SetPoi(this);
-        }
+        cosId = newCosId;
         int index = 0;
         foreach (ContentContainer cc in ContentContainers)
             cc.Instantiate_link(markerObj,index++);
@@ -292,9 +275,6 @@ public class Content
 			content 					= (GameObject) GameObject.CreatePrimitive(PrimitiveType.Plane);
 			content.transform.parent 	= contentContainer.transform;
 			content.name 				= content.transform.parent.name + "_tex2D";
-			//add content to touchinput layer to manipulate it with a touch screen
-			//if the layer is set is that it seems to be rendered on the CameraMap... and that's a problem
-			//content.layer 				= LayerMask.NameToLayer("VisAgeContent");//SceneTools.ContentLayerMaskName());
 			
 			content.transform.position 	= Position.getVector3();
 			content.transform.rotation 	= /*Rotation.getQuaternion() +*/ Quaternion.Euler(0f, 180f, 0f);
@@ -309,14 +289,8 @@ public class Content
 			{
 				Texture2D texture = new Texture2D(512,512);
 				texture.LoadImage(System.IO.File.ReadAllBytes(p));
-                    //TextureScaler tool = new TextureScaler();
-                    //TextureScaler.scale(texture, 1, 1);
                     content.GetComponent<MeshCollider>().enabled = true;
                 content.GetComponent<Renderer>().material.mainTexture = texture;
-                    //content.transform.localScale = new Vector3(0.2f,0.2f,0.2f);
-
-
-                    //content.GetComponent<Renderer>().material.shader = Shader.Find("metaio/UnlitTexture");
                 }
 			else
 			{
@@ -334,7 +308,6 @@ public class Content
                 
             //Model3D model3D 			= GameObject.Find("Object3DManager").GetComponent<Model3D>();
 			//GameObject[] models 		= model3D.Load(Path.Combine(Application.persistentDataPath, SceneTools.AreaNameDefault() + "/"+Description));
-
             Debug.Log("A object3D from" + content.name);
 			break;
 		
@@ -350,20 +323,9 @@ public class Content
                 content.name = content.transform.parent.name + "_audio";
                     //content.layer 				= LayerMask.NameToLayer(SceneTools.ContentLayerMaskName());
                 Test   t = (content.GetComponent("Test") as Test);                  
-                 t.sendAudioName(Description,content);
- 
-                    
+                 t.sendAudioName(Description,content);                  
                 content.transform.position = Position.getVector3();
-                //content.transform.rotation = /*Rotation.getQuaternion();*/ Quaternion.Euler(0f, 180f, 0f);
-                //content.transform.localScale = Scale.getVector3();
-                //content.AddComponent<ControlAudio>();
-                //content.GetComponent<ControlAudio>().enabled = true;
-                //AudioSource asource = content.AddComponent<AudioSource>();
-                //asource.playOnAwake = false;
-                
-                //asource.clip = clip;
-                Debug.Log("A audio from" + content.name);
-                    
+                Debug.Log("A audio from" + content.name);                    
                     content.AddComponent<MeshCollider>();
                     content.AddComponent<DragScript>();
                     mediaGo = content;
@@ -371,19 +333,6 @@ public class Content
             break;
 		
         case PoiDataType.text:
-                //Transform prefab = GameObject.Find("content_text").transform;
-                //content = GameObject.Instantiate<GameObject>(prefab.gameObject,new Vector3(0,0,0), Quaternion.identity);
-              //  content = new GameObject();
-			//content.transform.parent 	= contentContainer.transform;
-			//content.name 				= content.transform.parent.name + "_text";
-			//content.layer 				= LayerMask.NameToLayer(SceneTools.ContentLayerMaskName());
-			
-			//content.transform.position = Position.getVector3();
-			//content.transform.rotation = /*Rotation.getQuaternion();*/ Quaternion.Euler(0f, 180f, 0f);
-			//content.transform.localScale = Scale.getVector3();
-                //content.AddComponent<GUIText>();
-                //content.GetComponent<GUIText>().text = Description;
-                //content.GetComponent<TextMesh>().text = Description;
 
                 GameObject TextContent = GameObject.Find("TextContent");
                  content = (GameObject)GameObject.Instantiate(TextContent);
@@ -426,7 +375,6 @@ public class MyVector3
 	public float x;
 	public float y;
 	public float z;
-
 	public Vector3 	  getVector3(){return new Vector3 ( x, y, z);}
 	public Quaternion getQuaternion(){return Quaternion.Euler(x,y,z);}
 }

@@ -5,10 +5,8 @@ using UnityEngine;
 public class HiddenMyMap : Hidden {
     public bool mapOn = true;
 	// Use this for initialization
-	void Start () {
-		
-	}
-	
+	void Start () {		
+	}	
 	// Update is called once per frame
 	void Update () {
         GameObject parentGo = GameObject.Find("myui");

@@ -14,7 +14,6 @@ public class ActiveCamera : MonoBehaviour
     public GameObject MapCamera;
     bool isNearPOIOpen = false;
     Area area = null;
-
     public int buttonFontSize = 40;
     public float changeInterval = 1.0f;
     Vector4 fontColor = Color.white;
@@ -43,10 +42,9 @@ public class ActiveCamera : MonoBehaviour
 
     }
 
-    //找到摄像机对象  
     void FindCamera()
     {
-        ARCamera = GameObject.Find("ARCamera");//第一人称视角  
+        ARCamera = GameObject.Find("ARCamera");//
         MapCamera = GameObject.Find("Main Camera");
         MapCamera.GetComponent<Camera>().enabled = false;
         //MapCamera.SetActive(true);
@@ -54,7 +52,7 @@ public class ActiveCamera : MonoBehaviour
 
     }
     Camera GetCamera(string name) {
-        GameObject c = GameObject.Find(name);//第三人称视角  
+        GameObject c = GameObject.Find(name);//  
      
         return c.GetComponent<Camera>();
     }
@@ -69,8 +67,6 @@ public class ActiveCamera : MonoBehaviour
         ChangeCamera();
         if(!SceneTools.isTracking)
         ButtonToToggleView();
-
-
         if (isARenabled()==true &&!SceneTools.isTracking){
 			ButtonToSeeHistory();
 			ButtonToClearContent();
@@ -120,18 +116,15 @@ public class ActiveCamera : MonoBehaviour
                 SceneTools.ChangeSetting("Test", "34", "false");
                 SceneTools.CurrentSource = "Test";
             }
-
-               
+              
             else if (SceneTools.CurrentSource == "Test")
             {
                 SceneTools.ChangeSetting("realdata", "34", "false");
                 SceneTools.CurrentSource = "realdata";
             }
-
         }
     }
-    void showNearestPOI() {
-        
+    void showNearestPOI() {       
         
             GPSlocation userPosition = new GPSlocation(51.5221, -0.131411);
             if (UnityEngine.Input.location.status == LocationServiceStatus.Running) {
@@ -147,7 +140,7 @@ public class ActiveCamera : MonoBehaviour
             if (name.Contains("."))
                 name = name.Split('.')[1];
                 string s = "The nearest POI is " + name + "\n " + (int)(nearestPoi.GetDistance(userPosition)) + "m away.";
-                DrawText(new Vector2(Screen.width *0.2f, Screen.height *0.5f),s);
+                DrawText(new Vector2(Screen.width *0.2f, Screen.height *0.6f),s);
                 string p = Path.Combine(Application.persistentDataPath, SceneTools.AreaNameDefault() + "/" + "StreamingAssets"+"/" + nearestPoi.ImageTarget);
                 if (NearestPOIpath != p)
                 {
@@ -193,14 +186,14 @@ public class ActiveCamera : MonoBehaviour
         {
             SetFalse();           
             enableCamera(ARCamera, true);
-            showStr = "切换至第一人称视角";
+            showStr = "";
         }
 
         else if (Input.GetKey(KeyCode.Alpha3))
         {
             SetFalse();
             enableCamera(MapCamera, true);
-            showStr = "切换至第三人称视角";
+            showStr = "";
         }
         //Debug.Log(showStr);
         GUILayout.Button(showStr);  
@@ -217,11 +210,9 @@ public class ActiveCamera : MonoBehaviour
         GUIStyle titleStyle = new GUIStyle("button");
         titleStyle.fontSize = buttonFontSize;
         Rect r = new Rect(0, 2f / 8 * Screen.height, 0.2f * Screen.width, 0.1f * Screen.height);
-
         if (GUI.Button(r, "Change\n Mode", titleStyle)) {
             bool ARenabled = isARenabled();
             toggleCamera(!ARenabled, ARenabled);                
-
         }
     }
     void ButtonToSeeHistory()
@@ -235,7 +226,6 @@ public class ActiveCamera : MonoBehaviour
         {
             isMneuOpen = !isMneuOpen;
             ARCamera.GetComponent<DynamicDataSetLoader>().isDisplayContent = !ARCamera.GetComponent<DynamicDataSetLoader>().isDisplayContent;
-
         }
     }
     void  ButtonToClearContent()
@@ -246,9 +236,7 @@ public class ActiveCamera : MonoBehaviour
         titleStyle.normal.textColor = fontColor;// 7f / 8 * Screen.height
         Rect r = new Rect(0.2f * Screen.width, Screen.height- 0.1f * Screen.height, 0.2f * Screen.width, 0.1f * Screen.height);
         if (GUI.Button(r, "Clear\n content", titleStyle))
-        {
-            
-           // ARCamera.GetComponent<DynamicDataSetLoader>().AddedPOIs = new List<POI>();
+        {            
             ARCamera.GetComponent<DynamicDataSetLoader>().seenPOIs = new List<POI>();
         }
     }
@@ -262,11 +250,9 @@ public class ActiveCamera : MonoBehaviour
         Rect r = new Rect(0.4f * Screen.width, Screen.height - 0.1f * Screen.height, 0.2f * Screen.width, 0.1f * Screen.height);
         if (GUI.Button(r, "All\n content", titleStyle))
         {
-
             ARCamera.GetComponent<DynamicDataSetLoader>().seenPOIs =  new List<POI>();
             foreach (POI p in ARCamera.GetComponent<DynamicDataSetLoader>().area.POIs)
-                ARCamera.GetComponent<DynamicDataSetLoader>().seenPOIs.Add(p);
-            
+                ARCamera.GetComponent<DynamicDataSetLoader>().seenPOIs.Add(p);            
         }
     }
     void SwitchCompass(bool compassState) {
@@ -286,10 +272,5 @@ public class ActiveCamera : MonoBehaviour
     void SetFalse()
     {
         toggleCamera(false,false);
-
-
     }
-
-
-
 }

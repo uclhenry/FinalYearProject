@@ -31,7 +31,6 @@ public class DynamicDataSetLoader : MonoBehaviour
     Content currentContent = null;
     float deg;
     private string _result;
- 
     // specify these in Unity Inspector
     public GameObject canvasForPoi = null;  // you can use teapot or other object
     public GameObject secondObject = null;
@@ -50,20 +49,17 @@ public class DynamicDataSetLoader : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
         contentList = new List<Content>();
         seenPOIs = new List<POI>();
         //AddedPOIs = new List<POI>();
         Input.compass.enabled = true;
         //convert xml into class
         area = Area.Load("download");
-
         string Source = SceneTools.GetSettingValue("Source");
         if (Source == "") Source = "realdata";
         if (Source == "Test") dataSetName = "UCL";
         else dataSetName = "RealData";
         CreateTrackerPois();
-
         //StartCoroutine(LoadXML());
         // Vuforia 6.2+
         VuforiaARController.Instance.RegisterVuforiaStartedCallback(LoadDataSet);
@@ -83,29 +79,6 @@ public class DynamicDataSetLoader : MonoBehaviour
         }
     }
 
-    //void updatePoi() {
-    //    float degree = Input.compass.magneticHeading;
-    //    Debug.Log(degree);
-    //    //deg = 180f;
-    //    double angle = Math.PI * degree / 180.0;
-    //    double sinAngle = Math.Sin(-1 * angle);
-    //    double cosAngle = Math.Cos(-1 * angle);
-    //    //s = os = oa + as = x cos(theta) + y sin(theta)
-    //    //t = ot = ay ¨C ab = y cos(theta) ¨C x sin(theta)
-    //    Area a = area;
-    //    float currentX = (float)a.POIs[0].GetGPSlocation().longitude;
-    //    float currentZ = (float)a.POIs[0].GetGPSlocation().latitude;
-    //    foreach (POI p in a.POIs)
-    //    {
-    //        Debug.Log("updating!");
-
-    //        float x = (float)p.GetGPSlocation().longitude - currentX;
-    //        float z = (float)p.GetGPSlocation().latitude - currentZ;
-    //        float s = (float)(x * cosAngle + z * sinAngle);
-    //        float t = (float)(z * cosAngle - x * sinAngle);
-    //        p.GetARgo().transform.position = new Vector3(500000f * s, 0f, 500000f * t);
-    //    }
-    //}
     void CreateTrackerPois()
     {
         GameObject areaObject = new GameObject();
@@ -301,7 +274,6 @@ public class DynamicDataSetLoader : MonoBehaviour
         if (area != null)
             if (area.POIs != null)
             {
-
                 //updatePoi();
                 //updateSeenContent();
             }
@@ -309,7 +281,6 @@ public class DynamicDataSetLoader : MonoBehaviour
         IEnumerable<TrackableBehaviour> tbs = TrackerManager.Instance.GetStateManager().GetTrackableBehaviours();
         foreach (TrackableBehaviour tb in tbs)
         {
-
             //Transform board = tb.gameObject.transform.GetChild(0);
 
             //if (area.POIs != null) {
@@ -327,7 +298,6 @@ public class DynamicDataSetLoader : MonoBehaviour
 
             //    }
             //}
-
 
         }
 
@@ -407,9 +377,7 @@ public class DynamicDataSetLoader : MonoBehaviour
                         panningStopped = false;
                        
                     } break;
-   
-
- 
+    
                 }
                 if (panningStopped)
                     panning = false;
@@ -458,8 +426,6 @@ public class DynamicDataSetLoader : MonoBehaviour
                 default:
                     break;
             }
-
-
         }
         else {
             currentMenu = 1;
@@ -496,7 +462,6 @@ public class DynamicDataSetLoader : MonoBehaviour
         if (GUI.Button(r, "+", titleStyle))
         {
             deg += 10;
-
         }
         if (GUI.Button(r, "Historical\n POIs", titleStyle))
         {
@@ -567,8 +532,6 @@ public class DynamicDataSetLoader : MonoBehaviour
         GUI.Label(new Rect(50, 100, 200, 600), ParagraghFormat(content,30), bb);
     }
     Content FindLatestContent(PoiDataType type){
-
-
         Content example = null;
         foreach (Content c in contentList)
         {
@@ -601,9 +564,10 @@ public class DynamicDataSetLoader : MonoBehaviour
     {
         GUIStyle titleStyle = new GUIStyle("Button");
         titleStyle.fontSize = 35;
-        int h = 100;
+        float h = (int)(Screen.height/2/6);//100
         float y = (currentMenu == 4) ? (float)0.8 * Screen.height:(float)0.6 * Screen.height;
-        GUILayout.BeginArea(new Rect(200,y , 800, 1000));
+        h = (currentMenu == 4) ? (float)0.2 * Screen.height / 10 : (float)0.4 * Screen.height /10;
+        GUILayout.BeginArea(new Rect(Screen.width*0.1f,y , Screen.width * 0.8f, 1000));
 
         if (currentMenu == poiMenu)
         {
@@ -706,7 +670,6 @@ public class DynamicDataSetLoader : MonoBehaviour
     //        point.SimilarityThreshold = Convert.ToSingle(ele.Element("SimilarityThreshold").Value);
     //        Pois.Add(point);
     //    }
-
     //}
 	    void CreatePoi()
     {
